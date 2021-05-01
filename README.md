@@ -30,8 +30,8 @@
 Результат: полный бекап файлов всего проекта и дамп наполненной базы данных.
 
 # Explanation
-# task 3
-  Для коректної роботи программи потрібно змінити base_url() в application/config/config.php на
+## task 3
+  Для коректної роботи програми потрібно змінити base_url() в application/config/config.php на
   
   ```php
   $config['base_url'] = 'http://your_url/task3/'; // якщо не міняти структури папок репозиторію
