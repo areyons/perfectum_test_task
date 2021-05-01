@@ -1,0 +1,85 @@
+------------
+Запит на створення таблиці користувачів:
+
+CREATE TABLE users (
+           id_user INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+           nickname VARCHAR(50) NOT NULL
+       )
+------------
+Запит на створення таблиці чатів:
+
+CREATE TABLE chats (
+           id_chat INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+           chat_name VARCHAR(50) NOT NULL
+       )
+------------
+Запит на створення таблиці чати-користувачі для їх звязку по полям id_chat, id_user:
+
+CREATE TABLE chats_users (
+           id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+           id_chat INT UNSIGNED,
+           id_user INT UNSIGNED,
+           FOREIGN KEY (id_chat) REFERENCES messages.chats(id_chat),
+           FOREIGN KEY (id_user) REFERENCES messages.users(id_user)
+           ON UPDATE CASCADE
+           ON DELETE CASCADE
+       )
+------------
+Запит на створення таблиці всіх повідомлень із зовнішнім звязком по id_chat, id_user:
+
+CREATE TABLE messages (
+           id_message INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+           id_chat INT UNSIGNED NOT NULL,
+           id_user INT UNSIGNED,
+           message_text TEXT NOT NULL,
+           date DATETIME NOT NULL,
+           FOREIGN KEY (id_chat) REFERENCES messages.chats(id_chat) ON DELETE CASCADE,
+           FOREIGN KEY (id_user) REFERENCES messages.users(id_user) ON DELETE SET NULL
+)
+
+------------
+Запит при відправці повідомлення користувача ішому користувачу в їхньому чаті:
+
+INSERT INTO messages(id_chat, id_user, message_text, date)
+VALUES (1, 2, 'Hi! How are you?', '2021-04-29 14:26:45')
+
+------------
+Запит на отримання всіх чатів певного користувача:
+
+SELECT chat_name FROM chats_users, chats
+WHERE chats_users.id_user = 2
+AND chats.id_chat = chats_users.id_chat
+
+------------
+Запит для видалення конкретного повідомлення:
+
+DELETE FROM messages 
+WHERE id_chat = 1 
+AND id_message = 2
+
+------------
+Запит для видалення всіх повідомлень в певному чаті (очищення переписки)
+
+DELETE FROM messages 
+WHERE id_chat = 1
+
+------------
+Запит для видалення всіх повідомлень конкретного користувача в певному чаті
+
+DELETE FROM messages
+WHERE id_chat = 1
+AND id_user = 1
+
+------------
+Запит для видалення всього чату і повідомлень в цілому
+
+DELETE FROM chats
+WHERE id_chat = 1
+
+------------
+Отриманняя всіх повідомлень певного користувача в усіх його чатах
+
+SELECT chats.id_chat, chats.chat_name, message_text, date FROM chats, messages
+WHERE messages.id_user = 1
+AND chats.id_chat = messages.id_chat
+
