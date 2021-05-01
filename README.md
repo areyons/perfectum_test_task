@@ -32,6 +32,10 @@
 # Explanation
 # task 3
   Для коректної роботи программи потрібно змінити base_url() в application/config/config.php на
+  
+  
   $config['base_url'] = 'http://your_url/task3/'; - якщо не міняти структури папок репозиторію
+  
+  
   $config['base_url'] = 'http://your_url/';       - якщо перемістити вміст папки /task3/ на свій сервер
   
